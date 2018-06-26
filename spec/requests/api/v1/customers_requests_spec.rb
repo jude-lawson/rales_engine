@@ -117,4 +117,18 @@ RSpec.describe 'Customers Requests' do
       expect(data).to_not eq(json_with_soft_time([sad_customer]))
     end
   end
+
+  describe 'Random Finders' do
+    it 'should return a random record' do
+      get '/api/v1/customers/random.json'
+
+      data = JSON.parse(response.body)
+
+      expect(data.class).to eq(Hash)
+      expect(data).to have_key('first_name')
+      expect(data).to have_key('last_name')
+      expect(data).to have_key('created_at')
+      expect(data).to have_key('updated_at')
+    end
+  end
 end
