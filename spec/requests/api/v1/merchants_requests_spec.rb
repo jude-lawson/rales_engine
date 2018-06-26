@@ -34,6 +34,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@merchants[1]))
     end
 
@@ -42,6 +43,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@merchants[1]))
     end
 
@@ -51,6 +53,7 @@ RSpec.describe 'Merchants Endpoints' do
       
       data = JSON.parse(response.body)
       
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@merchants[0]))
       expect(data).to_not eq(json_with_soft_time(early_merchant))
     end
@@ -62,6 +65,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@merchants[0]))
       expect(data).to_not eq(json_with_soft_time(early_merchant))
     end
@@ -73,6 +77,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time([@merchants[0]]))
     end
 
@@ -84,6 +89,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time([a_merchant, duplicate_merchant]))
       expect(data).to_not eq(json_with_soft_time(@merchants[1]))
     end
@@ -95,6 +101,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@merchants))
       expect(data).to_not eq(json_with_soft_time(early_merchant))
     end
@@ -106,6 +113,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@merchants))
       expect(data).to_not eq(json_with_soft_time(early_merchant))
     end
@@ -117,6 +125,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data.class).to eq(Hash)
       expect(data).to have_key('id')
       expect(data).to have_key('name')
