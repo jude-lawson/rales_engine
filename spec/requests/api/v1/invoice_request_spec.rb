@@ -96,5 +96,28 @@ describe "Invoices API" do
         expect(data).to_not eq(json_with_soft_time(sad_invoice_items))
       end
     end
+
+    describe '/api/v1/invoices/:id/items' do
+      it 'should return a collection of all related items' do
+        create(:customer)
+        create(:merchant)
+        item = create(:item)
+        another_item = create(:item)
+        invoice = create(:invoice)
+        invoice_item = create(:invoice_item, item_id: item.id, invoice_id: invoice.id)
+        another_invoice_item = create(:invoice_item, item_id: another_item.id, invoice_id: invoice.id)
+
+        sad_item = create(:item)
+        sad_invoice = create(:invoice)
+        sad_invoice_item = create(:invoice_item, item_id: sad_item.id, invoice_id: sad_invoice.id)
+
+        get "/api/v1/invoices/#{invoice.id}/items"
+
+        data = JSON.parse(response.body)
+        
+        expect(data).to eq(json_with_soft_time([item, another_item]))
+        expect(data).to_not eq(json_with_soft_time([sad_item]))
+      end
+    end
   end
 end
