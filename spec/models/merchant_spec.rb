@@ -21,10 +21,10 @@ RSpec.describe Merchant do
 
     describe '.search_results' do
       it 'should return a collection of results based on provided search params' do
-        merchant1 = Merchant.create!(name: 'Merchant 1')
-        merchant2 = Merchant.create!(name: 'Merchant 2')
+        merchant1 = Merchant.create!(name: "New", created_at: "2018-06-26T21:25:04.512Z") 
+        merchant2 = Merchant.create!(name: "New", created_at: "2018-06-26T21:25:04.512Z") 
 
-        search_params = { 'created_at' =>  merchant1.created_at.to_s }
+        search_params = { 'created_at' => "2018-06-26T21:25:04.512Z" }
         expect(Merchant.search_results(search_params)).to eq([merchant1, merchant2]) 
       end
     end

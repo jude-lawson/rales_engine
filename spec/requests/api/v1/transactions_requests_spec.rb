@@ -2,7 +2,14 @@ require 'rails_helper'
 
 RSpec.describe 'Transactions Requests' do
   before :all do
-    @transactions = create_list(:transaction, 3)
+    @date = "2018-06-26T21:25:04.512Z"
+    customer1 = Customer.create!(first_name: "Bob", last_name: "Smith", created_at: @date, updated_at: @date)
+    merchant1 = Merchant.create(name: "Merchant", created_at: @date, updated_at: @date)
+    invoice = Invoice.create!(customer_id: customer1.id, merchant_id: merchant1.id, status: "success")
+    transaction1 = Transaction.create!(invoice_id: invoice.id, credit_card_number: 1234567812341234, credit_card_expiration_date: "", result: "success", created_at: @date, updated_at: @date)
+    transaction2 = Transaction.create!(invoice_id: invoice.id, credit_card_number: 1234567812341234, credit_card_expiration_date: "", result: "success", created_at: @date, updated_at: @date)
+    transaction3 = Transaction.create!(invoice_id: invoice.id, credit_card_number: 1234567812341234, credit_card_expiration_date: "", result: "success", created_at: @date, updated_at: @date)
+    @transactions = [transaction1, transaction2, transaction3]
   end
 
   describe 'All transactions' do
@@ -56,7 +63,7 @@ RSpec.describe 'Transactions Requests' do
     end
       
     it 'should be able to return an single record found by created date' do
-      get "/api/v1/transactions/find?created_at=#{@transactions[0].created_at}"
+      get "/api/v1/transactions/find?created_at=#{@date}"
 
       data = JSON.parse(response.body)
 
@@ -65,7 +72,7 @@ RSpec.describe 'Transactions Requests' do
     end
 
     it 'should be able to return an single record found by updated date' do
-      get "/api/v1/transactions/find?updated_at=#{@transactions[0].updated_at}"
+      get "/api/v1/transactions/find?updated_at=#{@date}"
 
       data = JSON.parse(response.body)
 
@@ -109,7 +116,7 @@ RSpec.describe 'Transactions Requests' do
     
     it 'should be able to return a collection using created_at' do
       sad_transaction = create(:transaction, created_at: Date.yesterday)
-      get "/api/v1/transactions/find_all?created_at=#{@transactions[0].created_at}"
+      get "/api/v1/transactions/find_all?created_at=#{@date}"
       
       data = JSON.parse(response.body)
       
@@ -120,7 +127,7 @@ RSpec.describe 'Transactions Requests' do
     
     it 'should be able to return a collection using updated_at' do
       sad_transaction = create(:transaction, updated_at: Date.yesterday)
-      get "/api/v1/transactions/find_all?updated_at=#{@transactions[0].updated_at}"
+      get "/api/v1/transactions/find_all?updated_at=#{@date}"
 
       data = JSON.parse(response.body)
 

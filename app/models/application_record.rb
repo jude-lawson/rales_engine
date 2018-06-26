@@ -20,7 +20,7 @@ class ApplicationRecord < ActiveRecord::Base
       parsed_date = DateTime.parse(search_params[param])
       where(param => parsed_date)
     elsif param == 'unit_price'
-      price = (search_params[param].to_f * 100).round(1).to_i
+      price = (search_params[param].gsub(/\./, "").to_i)
       where(param => price)
     else
       where(search_params)

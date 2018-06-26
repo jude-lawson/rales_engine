@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'Merchants Endpoints' do
   before :each do
-    @merchants = create_list(:merchant, 2)
+    @date = "2018-06-26T21:25:04.512Z"
+    merchant1 = Merchant.create(name: "Merchant", created_at: @date, updated_at: @date)
+    merchant2 = Merchant.create(name: "Merchant", created_at: @date, updated_at: @date)
+    @merchants = [merchant1, merchant2]
   end
 
   describe 'Accesing the index endpoint' do
@@ -39,17 +42,17 @@ RSpec.describe 'Merchants Endpoints' do
     end
 
     it 'should be able to return a single record by its name' do
-      get "/api/v1/merchants/find?name=#{@merchants[1].name}"
+      get "/api/v1/merchants/find?name=#{@merchants[0].name}"
 
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@merchants[1]))
+      expect(data).to eq(json_with_soft_time(@merchants[0]))
     end
 
     it 'should be able to return a single record by its created_at datetime' do
       early_merchant = Merchant.create!(name: 'Early Merchant', created_at: '2012-03-27 14:53:59 UTC', updated_at: '2012-03-27 14:53:59 UTC')
-      get "/api/v1/merchants/find?created_at=#{@merchants[0].created_at}"
+      get "/api/v1/merchants/find?created_at=#{@date}"
       
       data = JSON.parse(response.body)
       
@@ -61,7 +64,7 @@ RSpec.describe 'Merchants Endpoints' do
     it 'should be able to return an single record by its updated_at datetime' do
       early_merchant = Merchant.create!(name: 'Early Merchant', created_at: '2012-03-27 14:53:59 UTC', updated_at: '2012-03-27 14:53:59 UTC')
 
-      get "/api/v1/merchants/find?updated_at=#{@merchants[0].updated_at}"
+      get "/api/v1/merchants/find?updated_at=#{@date}"
 
       data = JSON.parse(response.body)
 
@@ -97,7 +100,7 @@ RSpec.describe 'Merchants Endpoints' do
     it 'sould be able to return multiple records by created_at' do
       early_merchant = Merchant.create!(name: 'Early Merchant', created_at: '2012-03-27 14:53:59 UTC', updated_at: '2012-03-27 14:53:59 UTC')
 
-      get "/api/v1/merchants/find_all?created_at=#{@merchants[0].created_at}"
+      get "/api/v1/merchants/find_all?created_at=#{@date}"
 
       data = JSON.parse(response.body)
 
@@ -109,7 +112,7 @@ RSpec.describe 'Merchants Endpoints' do
     it 'sould be able to return multiple records by updated_at' do
       early_merchant = Merchant.create!(name: 'Early Merchant', created_at: '2012-03-27 14:53:59 UTC', updated_at: '2012-03-27 14:53:59 UTC')
 
-      get "/api/v1/merchants/find_all?updated_at=#{@merchants[0].updated_at}"
+      get "/api/v1/merchants/find_all?updated_at=#{@date}"
 
       data = JSON.parse(response.body)
 

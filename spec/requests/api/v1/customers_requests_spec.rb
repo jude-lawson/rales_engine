@@ -2,7 +2,11 @@ require 'rails_helper'
 
 RSpec.describe 'Customers Requests' do
   before :each do
-    @customers = create_list(:customer, 3)
+    @date = "2018-06-26T21:25:04.512Z"
+    customer1 = Customer.create!(first_name: "Bob", last_name: "Smith", created_at: @date, updated_at: @date)
+    customer2 = Customer.create!(first_name: "Bob", last_name: "Smith", created_at: @date, updated_at: @date)
+    customer3 = Customer.create!(first_name: "Bob", last_name: "Smith", created_at: @date, updated_at: @date)
+    @customers = [customer1, customer2, customer3]
   end
   describe 'All customer records' do
     it 'should be able to return all customer records' do
@@ -51,7 +55,7 @@ RSpec.describe 'Customers Requests' do
     end
 
     it 'should be able to return a single record by created date' do
-      get "/api/v1/customers/find?created_at=#{@customers[0].created_at}"
+      get "/api/v1/customers/find?created_at=#{@date}"
 
       data = JSON.parse(response.body)
 
@@ -59,7 +63,7 @@ RSpec.describe 'Customers Requests' do
     end
 
     it 'should be able to return a single record by updated date' do
-      get "/api/v1/customers/find?updated_at=#{@customers[0].updated_at}"
+      get "/api/v1/customers/find?updated_at=#{@date}"
 
       data = JSON.parse(response.body)
 
@@ -99,7 +103,7 @@ RSpec.describe 'Customers Requests' do
 
     it 'should be able to return a collection of transactions from created date' do
       sad_customer = create(:customer, created_at: Date.yesterday)
-      get "/api/v1/customers/find_all?created_at=#{@customers[0].created_at}"
+      get "/api/v1/customers/find_all?created_at=#{@date}"
 
       data = JSON.parse(response.body)
 
@@ -109,7 +113,7 @@ RSpec.describe 'Customers Requests' do
 
     it 'should be able to return a collection of transactions from update date' do
       sad_customer = create(:customer, updated_at: Date.yesterday)
-      get "/api/v1/customers/find_all?updated_at=#{@customers[0].updated_at}"
+      get "/api/v1/customers/find_all?updated_at=#{@date}"
 
       data = JSON.parse(response.body)
 
