@@ -13,6 +13,6 @@ class Api::V1::InvoiceItems::SearchController < ApplicationController
 
   private
   def search_params
-    params.permit(:quantity, :item_id, :invoice_id, :unit_price)
+    params.permit(:quantity, :item_id, :invoice_id, :unit_price, :updated_at, :created_at)
   end
 end
