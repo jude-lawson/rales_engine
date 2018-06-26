@@ -21,10 +21,19 @@ describe "Invoice_items API" do
     expect(returned_invoice_item["quantity"]).to eq(invoice_item.quantity)
   end
 
-  it 'should find a single invoice based on params' do
+  it 'should find a single invoice based on quantity' do
     invoice_item = create(:invoice_item)
 
     get "/api/v1/invoice_items/find?quantity=#{invoice_item.quantity}"
+
+    expect(response).to be_successful
+    expect(JSON.parse(response.body)["quantity"]).to eq(invoice_item.quantity)
+  end
+  
+  it 'should find a single invoice based on id' do
+    invoice_item = create(:invoice_item)
+
+    get "/api/v1/invoice_items/find?id=#{invoice_item.id}"
 
     expect(response).to be_successful
     expect(JSON.parse(response.body)["quantity"]).to eq(invoice_item.quantity)
@@ -37,5 +46,24 @@ describe "Invoice_items API" do
 
     expect(response).to be_successful
     expect(JSON.parse(response.body).length).to eq(5)
+  end
+
+  describe 'Random Finder' do
+    it 'should return a random record' do
+      create_list(:invoice_item, 5)
+
+      get '/api/v1/invoice_items/random.json'
+
+      data = JSON.parse(response.body)
+
+      expect(data.class).to eq(Hash)
+      expect(data).to have_key('id')
+      expect(data).to have_key('item_id')
+      expect(data).to have_key('invoice_id')
+      expect(data).to have_key('quantity')
+      expect(data).to have_key('unit_price')
+      expect(data).to have_key('created_at')
+      expect(data).to have_key('updated_at')
+    end
   end
 end
