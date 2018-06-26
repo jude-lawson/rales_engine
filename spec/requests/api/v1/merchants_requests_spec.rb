@@ -124,4 +124,9 @@ RSpec.describe 'Merchants Endpoints' do
       expect(data).to have_key('updated_at')
     end
   end
+
+  describe 'Relationship endpoints' do
+    it 'should return items associated with a merchant' do
+    end
+  end
 end

@@ -40,4 +40,23 @@ describe "Invoices API" do
     expect(response).to be_successful
     expect(JSON.parse(response.body).length).to eq(5)
   end
+
+  describe 'Random Finder' do
+    it 'should return a random record' do
+      create_list(:invoice, 5)
+
+      get '/api/v1/invoices/random.json'
+
+      data = JSON.parse(response.body)
+
+      expect(data.class).to eq(Hash)
+      expect(data).to have_key('id')
+      expect(data).to have_key('customer_id')
+      expect(data).to have_key('merchant_id')
+      expect(data).to have_key('status')
+      expect(data).to have_key('created_at')
+      expect(data).to have_key('updated_at')
+    end
+  end
+
 end

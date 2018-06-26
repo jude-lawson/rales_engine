@@ -9,6 +9,6 @@ class Api::V1::Items::SearchController < ApplicationController
 
   private
   def search_params
-    params.permit(:name, :description, :unit_price, :updated_at, :created_at)
+    params.permit(:id, :name, :description, :merchant_id, :unit_price, :updated_at, :created_at)
   end
 end
