@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Merchants Endpoints' do
-  before :each do
+  before :all do
     @merchants = create_list(:merchant, 2)
   end
 
@@ -12,7 +12,7 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data.length).to eq(2)
+      expect(data).to eq(json_with_soft_time(@merchants))
     end
   end
 
@@ -24,8 +24,33 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data['id']).to eq(merchant.id)
-      expect(data['name']).to eq(merchant.name)
+      expect(data).to eq(json_with_soft_time(merchant))
     end
+  end
+
+  context 'Single Record Finder' do
+    it 'should be able to return a single record by its id' do
+      get "/api/v1/merchants/find?id=#{@merchants[1].id}"
+
+      data = JSON.parse(response.body)
+
+      expect(data).to eq(json_with_soft_time(@merchants[1]))
+    end
+
+    it 'should be able to return a single record by its name' do
+      get "/api/v1/merchants/find?name=#{@merchants[1].name}"
+
+      data = JSON.parse(response.body)
+
+      expect(data).to eq(json_with_soft_time(@merchants[1]))
+    end
+
+    it 'should be able to return a single record by its created_at datetime' do
+      get "/api/v1/merchants/find?created_at=#{@merchants[1].created_at}"
+
+      data = JSON.parse(response.body)
+
+      expect(data).to eq(json_with_soft_time(@merchants[1]))
+    end 
   end
 end
