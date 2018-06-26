@@ -11,6 +11,7 @@ RSpec.describe 'Transactions Requests' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions))
     end
   end
@@ -21,6 +22,7 @@ RSpec.describe 'Transactions Requests' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions[0]))
     end
   end
@@ -31,6 +33,7 @@ RSpec.describe 'Transactions Requests' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions[1]))
     end
 
@@ -39,6 +42,7 @@ RSpec.describe 'Transactions Requests' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions[0]))
     end
 
@@ -47,6 +51,7 @@ RSpec.describe 'Transactions Requests' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions[0]))
     end
       
@@ -55,6 +60,7 @@ RSpec.describe 'Transactions Requests' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions[0]))
     end
 
@@ -63,6 +69,7 @@ RSpec.describe 'Transactions Requests' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions[0]))
     end
   end
@@ -70,6 +77,12 @@ RSpec.describe 'Transactions Requests' do
   describe 'Multi Finders' do
     it 'should be able to return a collection using id' do
       get "/api/v1/transactions/find_all?id=#{@transactions[0].id}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_successful
+      expect(data).to eq(json_with_soft_time([@transactions[0]]))
+      expect(data).to_not eq(json_with_soft_time([@transactions[1]]))
     end
 
     it 'should be able to return a collection using credit_card_number' do
@@ -78,6 +91,7 @@ RSpec.describe 'Transactions Requests' do
       
       data = JSON.parse(response.body)
       
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions))
       expect(data).to_not eq(json_with_soft_time(sad_transaction))
     end
@@ -88,6 +102,7 @@ RSpec.describe 'Transactions Requests' do
       
       data = JSON.parse(response.body)
       
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions))
       expect(data).to_not eq(json_with_soft_time(sad_transaction))
     end
@@ -98,6 +113,7 @@ RSpec.describe 'Transactions Requests' do
       
       data = JSON.parse(response.body)
       
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions))
       expect(data).to_not eq(json_with_soft_time(sad_transaction))
     end
@@ -108,6 +124,7 @@ RSpec.describe 'Transactions Requests' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data).to eq(json_with_soft_time(@transactions))
       expect(data).to_not eq(json_with_soft_time(sad_transaction))
     end
@@ -119,6 +136,7 @@ RSpec.describe 'Transactions Requests' do
 
       data = JSON.parse(response.body)
 
+      expect(response).to be_successful
       expect(data.class).to eq(Hash)
       expect(data).to have_key('id')
       expect(data).to have_key('invoice_id')
