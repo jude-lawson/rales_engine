@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       # Transactions
       get 'transactions/find', to: 'transactions/search#show'
       get 'transactions/find_all', to: 'transactions/search#index'
+      get 'transactions/random', to: 'transactions/random#show'
       resources :transactions, only: [:index, :show]
     end
   end

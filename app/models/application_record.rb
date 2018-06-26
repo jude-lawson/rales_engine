@@ -20,4 +20,8 @@ class ApplicationRecord < ActiveRecord::Base
       where(search_params)
     end
   end
+
+  def self.random_record
+    order("RANDOM()").limit(1).first
+  end
 end
