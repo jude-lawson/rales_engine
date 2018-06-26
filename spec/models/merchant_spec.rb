@@ -5,6 +5,11 @@ RSpec.describe Merchant do
     it { should validate_presence_of(:name) }
   end
 
+  describe 'Relationships' do
+    it { should have_many(:invoices) }
+    it { should have_many(:items) }
+  end
+
   describe 'Class Methods' do
     describe '.search_result' do
       it 'should return a single record based on given key value pair' do

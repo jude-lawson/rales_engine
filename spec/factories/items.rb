@@ -5,5 +5,6 @@ FactoryBot.define do
     end
     description "MyText"
     unit_price 1
+    merchant
   end
 end

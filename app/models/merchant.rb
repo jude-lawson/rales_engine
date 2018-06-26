@@ -1,6 +1,9 @@
 class Merchant < ApplicationRecord
   validates_presence_of :name
 
+  has_many :invoices
+  has_many :items
+
   def self.search_result(search_params)
     param = search_params.keys.first
     if param == 'created_at' || param == 'updated_at'
