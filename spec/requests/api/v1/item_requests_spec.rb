@@ -2,8 +2,7 @@ require 'rails_helper'
 
 describe "Items API" do
   it 'should return all items' do
-    items = create_list(:item, 5)
-
+    create_list(:item, 5)
     get '/api/v1/items.json'
 
     expect(response).to be_successful
@@ -25,16 +24,8 @@ describe "Items API" do
   end
 
   it 'should find a single item based on params' do
-    item = create(:item)
-
-    get "/api/v1/items/find?name=#{item.name}"
-
-    expect(response).to be_successful
-    expect(JSON.parse(response.body)["name"]).to eq(item.name)
-  end
-  
-  it 'should find a single item based on params' do
-    item = create(:item)
+    merchant = create(:merchant)
+    item = create(:item, merchant: merchant)
 
     get "/api/v1/items/find?name=#{item.name}"
 
@@ -42,8 +33,9 @@ describe "Items API" do
     expect(JSON.parse(response.body)["name"]).to eq(item.name)
   end
 
-  it 'should find a single item based on params' do
-    items = create_list(:item, 5)
+  it 'should find all items based on params' do
+    merchant = create(:merchant)
+    create_list(:item, 5, merchant: merchant)
 
     get "/api/v1/items/find_all?unit_price=#{Item.first.unit_price}"
 
