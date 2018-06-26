@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Merchants Endpoints' do
-  before :all do
+  before :each do
     @merchants = create_list(:merchant, 2)
   end
 
@@ -77,13 +77,14 @@ RSpec.describe 'Merchants Endpoints' do
     end
 
     it 'should be able to return multiple records by name' do
-      duplicate_merchant = Merchant.create!(name: 'Merchant 1')
+      a_merchant = Merchant.create!(name: 'Same Name Merchant')
+      duplicate_merchant = Merchant.create!(name: 'Same Name Merchant')
 
-      get "/api/v1/merchants/find_all?name=#{@merchants[0].name}"
+      get "/api/v1/merchants/find_all?name=#{a_merchant.name}"
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time([@merchants[0], duplicate_merchant]))
+      expect(data).to eq(json_with_soft_time([a_merchant, duplicate_merchant]))
       expect(data).to_not eq(json_with_soft_time(@merchants[1]))
     end
 
