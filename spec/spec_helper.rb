@@ -108,3 +108,18 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+def json_with_soft_time(collection)
+  json_collection = collection.as_json
+  if json_collection.class == Array
+    json_collection.each do |record|
+      record["created_at"] = record["created_at"].iso8601(fraction_digits=3)
+      record["updated_at"] = record["updated_at"].iso8601(fraction_digits=3)
+    end
+  else
+    # json_collection is not collection, but singular hash
+    json_collection["created_at"] = json_collection["created_at"].iso8601(fraction_digits=3)
+    json_collection["updated_at"] = json_collection["updated_at"].iso8601(fraction_digits=3)
+  end
+  json_collection
+end
