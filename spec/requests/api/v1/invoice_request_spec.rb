@@ -59,4 +59,42 @@ describe "Invoices API" do
     end
   end
 
+  describe 'Relationship Endpoints' do
+    describe '/api/v1/invoices/:id/transactions' do
+      it 'should return a collection of associated transactions' do
+        create(:customer)
+        create(:merchant)
+        invoice = create(:invoice)
+        sad_invoice = create(:invoice)
+        transactions = create_list(:transaction, 2, invoice_id: invoice.id)
+        sad_transactions = create_list(:transaction, 2, invoice_id: sad_invoice.id)
+
+        get "/api/v1/invoices/#{invoice.id}/transactions"
+
+        data = JSON.parse(response.body)
+
+        expect(data).to eq(json_with_soft_time(transactions).reverse)
+        expect(data).to_not eq(json_with_soft_time(sad_transactions))
+      end
+    end
+
+    describe '/api/v1/invoices/:id/invoice_items' do
+      it 'should return a collection of associated invoice items' do
+        create(:customer)
+        create(:merchant)
+        invoice = create(:invoice)
+        sad_invoice = create(:invoice)
+        item = create(:item)
+        invoice_items = create_list(:invoice_item, 2, invoice_id: invoice.id)
+        sad_invoice_items = create_list(:invoice_item, 2, invoice_id: sad_invoice.id)
+
+        get "/api/v1/invoices/#{invoice.id}/invoice_items"
+
+        data = JSON.parse(response.body)
+
+        expect(data).to eq(json_with_soft_time(invoice_items))
+        expect(data).to_not eq(json_with_soft_time(sad_invoice_items))
+      end
+    end
+  end
 end
