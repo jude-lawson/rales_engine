@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
       # Transactions
       get 'transactions/find', to: 'transactions/search#show'
+      get 'transactions/find_all', to: 'transactions/search#index'
       resources :transactions, only: [:index, :show]
     end
   end

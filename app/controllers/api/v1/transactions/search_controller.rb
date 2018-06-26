@@ -3,9 +3,13 @@ class Api::V1::Transactions::SearchController < ApplicationController
     render json: Transaction.search_result(search_params)
   end
 
+  def index
+    render json: Transaction.search_results(search_params)
+  end
+
   private
 
   def search_params
-    params.permit(:id)
+    params.permit(:id, :credit_card_number, :result, :created_at, :updated_at)
   end
 end
