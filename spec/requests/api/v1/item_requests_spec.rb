@@ -59,4 +59,38 @@ describe "Items API" do
       expect(data).to have_key('updated_at')
     end
   end
+
+  describe 'Item Relationship Endpoints' do
+    describe '/api/v1/items/:id/invoice_items' do
+      it 'should return a collection of associated invoice items' do
+        item = create(:item, id: 2)
+        create(:item, id: 1)
+        invoice_items = create_list(:invoice_item, 2, item_id: 2)
+        sad_invoice_item = create(:invoice_item, item_id: 1)
+
+        get "/api/v1/items/#{item.id}/invoice_items"
+
+        data = JSON.parse(response.body)
+
+        expect(data).to eq(json_with_soft_time(invoice_items))
+        expect(data).to_not eq(json_with_soft_time(sad_invoice_item))
+      end
+    end
+
+    describe '/api/v1/items/:id/merchant' do
+      it 'should return the associated merchant record' do
+        merchant = create(:merchant, id: 2)
+        sad_merchant = create(:merchant, id: 1)
+        item = create(:item, merchant_id: 2)
+        create(:item, merchant_id: 1 )
+
+        get "/api/v1/items/#{item.id}/merchant"
+
+        data = JSON.parse(response.body)
+
+        expect(data).to eq(json_with_soft_time(merchant))
+        expect(data).to_not eq(json_with_soft_time(sad_merchant))
+      end
+    end
+  end
 end

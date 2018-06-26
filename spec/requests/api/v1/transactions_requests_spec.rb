@@ -154,4 +154,16 @@ RSpec.describe 'Transactions Requests' do
       expect(data).to have_key('updated_at')
     end
   end
+
+  describe 'Relationship endpoint' do
+    it 'should return associated invoice' do
+      create_list(:transaction, 4)
+
+      get "/api/v1/transactions/#{Transaction.last.id}/invoice"
+
+      data = JSON.parse(response.body)
+      expect(data["status"]).to eq("#{Invoice.last.status}")
+      expect(data["customer_id"]).to eq(Invoice.last.customer_id)
+    end
+  end
 end
