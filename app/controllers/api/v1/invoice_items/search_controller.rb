@@ -1,6 +1,10 @@
 class Api::V1::InvoiceItems::SearchController < ApplicationController
   def show
-    render json: InvoiceItem.search_result(search_params)
+    if request.env["PATH_INFO"].include?("random")
+      render json: InvoiceItem.order("random").take(1)
+    else
+      render json: InvoiceItem.search_result(search_params)
+    end
   end
 
   def index
