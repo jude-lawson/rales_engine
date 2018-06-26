@@ -30,6 +30,11 @@ Rails.application.routes.draw do
       get 'transactions/find_all', to: 'transactions/search#index'
       get 'transactions/random', to: 'transactions/random#show'
       resources :transactions, only: [:index, :show]
+
+      # Customers
+      get 'customers/find', to: 'customers/search#show'
+      get 'customers/find_all', to: 'customers/search#index'
+      resources :customers, only: [:index, :show]
     end
   end
 end
