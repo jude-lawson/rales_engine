@@ -127,6 +127,26 @@ RSpec.describe 'Merchants Endpoints' do
 
   describe 'Relationship endpoints' do
     it 'should return items associated with a merchant' do
+      create_list(:item, 5)
+
+      get "/api/v1/merchants/#{Merchant.last.id}/items"
+
+      data = JSON.parse(response.body)
+
+      expect(data.length).to eq(1)
+      expect(data.first["name"]).to eq("#{Item.last.name}")
+      expect(data.first["unit_price"]).to eq(Item.last.unit_price)
+      expect(data.first["description"]).to eq("#{Item.last.description}")
+    end
+
+    it 'should return invoices associated with a merchant' do
+      create_list(:invoice, 5)
+
+      get "/api/v1/merchants/#{Merchant.last.id}/invoices"
+
+      data = JSON.parse(response.body)
+      expect(data.first["status"]).to eq("#{Invoice.last.status}")
+      expect(data.first["merchant_id"]).to eq(Invoice.last.merchant_id)
     end
   end
 end
