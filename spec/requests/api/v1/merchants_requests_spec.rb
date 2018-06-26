@@ -46,11 +46,24 @@ RSpec.describe 'Merchants Endpoints' do
     end
 
     it 'should be able to return a single record by its created_at datetime' do
-      get "/api/v1/merchants/find?created_at=#{@merchants[1].created_at}"
+      early_merchant = Merchant.create!(name: 'Early Merchant', created_at: '2012-03-27 14:53:59 UTC', updated_at: '2012-03-27 14:53:59 UTC')
+      get "/api/v1/merchants/find?created_at=#{@merchants[0].created_at}"
+      
+      data = JSON.parse(response.body)
+      
+      expect(data).to eq(json_with_soft_time(@merchants[0]))
+      expect(data).to_not eq(json_with_soft_time(early_merchant))
+    end
+    
+    it 'should be able to return an single record by its updated_at datetime' do
+      early_merchant = Merchant.create!(name: 'Early Merchant', created_at: '2012-03-27 14:53:59 UTC', updated_at: '2012-03-27 14:53:59 UTC')
+
+      get "/api/v1/merchants/find?updated_at=#{@merchants[0].updated_at}"
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@merchants[1]))
-    end 
+      expect(data).to eq(json_with_soft_time(@merchants[0]))
+      expect(data).to_not eq(json_with_soft_time(early_merchant))
+    end
   end
 end
