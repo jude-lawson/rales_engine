@@ -34,6 +34,7 @@ describe "Invoices API" do
   it 'should find all invoices based on params' do
     create_list(:invoice, 5)
     create_list(:invoice, 5, status: "returned")
+    
     get "/api/v1/invoices/find_all?status=#{Invoice.first.status}"
 
     expect(response).to be_successful
