@@ -24,8 +24,8 @@ RSpec.describe Merchant do
         merchant1 = Merchant.create!(name: 'Merchant 1')
         merchant2 = Merchant.create!(name: 'Merchant 2')
 
-        search_params = { created_at: merchant1.created_at }
-        expect(Merchant.search_results(search_params).length).to eq(2) 
+        search_params = { 'created_at' =>  merchant1.created_at.to_s }
+        expect(Merchant.search_results(search_params)).to eq([merchant1, merchant2]) 
       end
     end
   end
