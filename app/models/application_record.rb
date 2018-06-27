@@ -28,6 +28,6 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def self.random_record
-    order("RANDOM()").limit(1).first
+    order(Arel.sql("RANDOM()")).limit(1).first
   end
 end

@@ -135,4 +135,33 @@ RSpec.describe 'Customers Requests' do
       expect(data).to have_key('updated_at')
     end
   end
+
+  describe 'Relationship endpoints' do
+    it 'should return a collection of associated invoices' do
+      customer = create(:customer)
+      create_list(:invoice, 4, customer: customer)
+
+      get "/api/v1/customers/#{customer.id}/invoices"
+      data = JSON.parse(response.body)
+
+      expect(data.count).to eq(Invoice.all.count)
+      expect(data.first["status"]).to eq(Invoice.first.status)
+      expect(data.last["status"]).to eq(Invoice.last.status)
+      expect(data).to eq(json_with_soft_time(Invoice.all.reverse))
+    end
+
+    it 'should return a collection of associated transactions' do
+      customer = create(:customer)
+      invoice = create(:invoice, customer: customer)
+      create_list(:transaction, 4, invoice: invoice)
+
+      get "/api/v1/customers/#{customer.id}/transactions"
+
+      data = JSON.parse(response.body)
+      expect(data.count).to eq(Transaction.all.count)
+      expect(data.first["result"]).to eq(Transaction.first.result)
+      expect(data.last["result"]).to eq(Transaction.last.result)
+      expect(data).to eq(json_with_soft_time(Transaction.all.reverse))
+    end
+  end
 end
