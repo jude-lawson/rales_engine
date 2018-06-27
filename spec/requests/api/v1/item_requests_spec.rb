@@ -95,30 +95,72 @@ describe "Items API" do
   end
 
   describe 'Business Intelligence Endpoints' do
-    it 'should show a collection of items with most revenue ranked by total revenue' do
-      merchant = create(:merchant)
-      customer = create(:customer)
-      invoice_list = create_list(:invoice, 5, merchant: merchant, customer: customer)
-      item1 = Item.create!(name: "Thing", description: "Things", unit_price: 1500, merchant_id: merchant.id)
-      item2 = Item.create!(name: "Thing2", description: "Things", unit_price: 2000, merchant_id: merchant.id)
-      item3 = Item.create!(name: "Thing3", description: "Things", unit_price: 2500, merchant_id: merchant.id)
-      item4 = Item.create!(name: "Thing4", description: "Things", unit_price: 1500, merchant_id: merchant.id)
-      create(:invoice_item, item: item1, unit_price: item1.unit_price, quantity: 10, invoice: invoice_list[0])
-      create(:invoice_item, item: item2, unit_price: item2.unit_price, quantity: 10, invoice: invoice_list[1])
-      create(:invoice_item, item: item3, unit_price: item3.unit_price, quantity: 10, invoice: invoice_list[2])
-      create(:invoice_item, item: item4, unit_price: item4.unit_price, quantity: 10, invoice: invoice_list[3])
-      create(:transaction, invoice: invoice_list[0])
-      create(:transaction, invoice: invoice_list[1])
-      create(:transaction, invoice: invoice_list[2])
-      create(:transaction, invoice: invoice_list[3], result: "failed")
+    describe '/api/v1/items/most_revenue?quantity=x' do
+      it 'should show a collection of items with most revenue ranked by total revenue' do
+        merchant = create(:merchant)
+        customer = create(:customer)
+        invoice_list = create_list(:invoice, 5, merchant: merchant, customer: customer)
+        item1 = Item.create!(name: "Thing", description: "Things", unit_price: 1500, merchant_id: merchant.id)
+        item2 = Item.create!(name: "Thing2", description: "Things", unit_price: 2000, merchant_id: merchant.id)
+        item3 = Item.create!(name: "Thing3", description: "Things", unit_price: 2500, merchant_id: merchant.id)
+        item4 = Item.create!(name: "Thing4", description: "Things", unit_price: 1500, merchant_id: merchant.id)
+        create(:invoice_item, item: item1, unit_price: item1.unit_price, quantity: 10, invoice: invoice_list[0])
+        create(:invoice_item, item: item2, unit_price: item2.unit_price, quantity: 10, invoice: invoice_list[1])
+        create(:invoice_item, item: item3, unit_price: item3.unit_price, quantity: 10, invoice: invoice_list[2])
+        create(:invoice_item, item: item4, unit_price: item4.unit_price, quantity: 10, invoice: invoice_list[3])
+        create(:transaction, invoice: invoice_list[0])
+        create(:transaction, invoice: invoice_list[1])
+        create(:transaction, invoice: invoice_list[2])
+        create(:transaction, invoice: invoice_list[3], result: "failed")
 
-      get '/api/v1/items/most_revenue?quantity=4'
+        get '/api/v1/items/most_revenue?quantity=4'
 
-      data = JSON.parse(response.body)
-      expect(data.count).to eq(3)
-      expect(data.first["name"]).to eq(item3.name)
-      expect(data.last["name"]).to eq(item1.name)
-      expect(data[1]["name"]).to eq(item2.name)
+        expect(response_data.count).to eq(3)
+        expect(response_data.first["name"]).to eq(item3.name)
+        expect(response_data.last["name"]).to eq(item1.name)
+        expect(response_data[1]["name"]).to eq(item2.name)
+      end
+    end
+
+    describe '/api/v1/items/most_items?quantity=x' do
+      it 'should return a quantity of items ranked by the total number sold' do
+        create(:merchant)
+        create(:customer)
+        create(:invoice)
+        item1 = create(:item)
+        item2 = create(:item)
+        sad_item = create(:item)
+        create(:invoice_item, item: item1, quantity: 10)
+        create(:invoice_item, item: item1, quantity: 9)
+        create(:invoice_item, item: item1, quantity: 8)
+        create(:invoice_item, item: item2, quantity: 7)
+        create(:invoice_item, item: item2, quantity: 6)
+        create(:invoice_item, item: item2, quantity: 5)
+
+        create(:invoice_item, item: sad_item, quantity: 4)
+        create(:invoice_item, item: sad_item, quantity: 3)
+        create(:invoice_item, item: sad_item, quantity: 2)
+        create(:invoice_item, item: sad_item, quantity: 1)
+
+        get '/api/v1/items/most_items?quantity=2'
+
+        expect(response_data).to eq(json_with_soft_time([item1, item2]))
+        expect(response_data).to_not eq(json_with_soft_time([sad_item]))
+      end
+
+      it 'should return error message if quantity param is not provided' do
+        get '/api/v1/items/most_items?number=2'
+
+        error_message = { "error" => "Please pass in '?quantity=<integer>' to search for a number of most items by rank" }.as_json
+
+        expect(response_data).to eq(error_message)
+      end
+    end
+
+    describe '/api/v1/items/:id/best_day' do
+      it 'should return the most recent date with the most sales for the given item using the invoice date' do
+        
+      end
     end
   end
 end
