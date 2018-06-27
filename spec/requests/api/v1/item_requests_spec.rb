@@ -156,5 +156,11 @@ describe "Items API" do
         expect(response_data).to eq(error_message)
       end
     end
+
+    describe '/api/v1/items/:id/best_day' do
+      it 'should return the most recent date with the most sales for the given item using the invoice date' do
+        
+      end
+    end
   end
 end
