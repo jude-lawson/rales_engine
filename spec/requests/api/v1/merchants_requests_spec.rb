@@ -161,4 +161,26 @@ RSpec.describe 'Merchants Endpoints' do
       expect(data.first["merchant_id"]).to eq(Invoice.last.merchant_id)
     end
   end
+
+  describe 'Business Endpoints' do
+    it 'can return customers with pending invoices' do
+      merchant = create(:merchant)
+      customer1 = create(:customer, first_name: 'Bob')
+      customer2 = create(:customer, first_name: 'Sally')
+      invoice = create(:invoice, customer: customer1, merchant: merchant)
+      invoice2 = create(:invoice, customer: customer2, merchant: merchant)
+      create(:transaction, invoice: invoice, result: 'failed')
+      create(:transaction, invoice: invoice2, result: 'failed')
+      create(:transaction, invoice: invoice2, result: 'success')
+
+      get "/api/v1/merchants/#{merchant.id}/customers_with_pending_invoices"
+
+      data = JSON.parse(response.body)
+
+      expect(data.count).to eq(1)
+      expect(data.first["first_name"]).to eq(customer1.first_name)
+      expect(data.first["last_name"]).to eq(customer1.last_name)
+    end
+  end
+
 end
