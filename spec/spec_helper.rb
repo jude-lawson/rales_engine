@@ -123,3 +123,7 @@ def json_with_soft_time(collection)
   end
   json_collection
 end
+
+def response_data
+  JSON.parse(response.body)
+end
