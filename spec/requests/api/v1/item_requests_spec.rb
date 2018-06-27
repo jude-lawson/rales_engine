@@ -142,10 +142,18 @@ describe "Items API" do
         create(:invoice_item, item: sad_item, quantity: 2)
         create(:invoice_item, item: sad_item, quantity: 1)
 
-        get "/api/v1/items/most_items?quantity=2"
+        get '/api/v1/items/most_items?quantity=2'
 
         expect(response_data).to eq(json_with_soft_time([item1, item2]))
         expect(response_data).to_not eq(json_with_soft_time([sad_item]))
+      end
+
+      it 'should return error message if quantity param is not provided' do
+        get '/api/v1/items/most_items?number=2'
+
+        error_message = { "error" => "Please pass in '?quantity=<integer>' to search for a number of most items by rank" }.as_json
+
+        expect(response_data).to eq(error_message)
       end
     end
   end
