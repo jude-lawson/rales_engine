@@ -2,6 +2,7 @@ require 'csv'
 
 namespace :db do
   namespace :seed do
+
     desc "Seed merchants in database" 
     pbar = ProgressBar.create(:title => "Merchants", :total => (CSV.read('./db/csv/merchants.csv')).count, :format => "%a %b\u{15E7}%i %p%% %t", :progress_mark  => ' ', :remainder_mark => "\u{FF65}", :starting_at => 1)
     task :seed_merchants => :environment do
@@ -10,6 +11,7 @@ namespace :db do
         Merchant.find_or_create_by(row.to_h)
       end
     end
+
     desc "Seed customers in database"
     task :seed_customers => :environment do
       pbar = ProgressBar.create(:title => "Customers", :total => (CSV.read('./db/csv/customers.csv')).count, :format => "%a %b\u{15E7}%i %p%% %t", :progress_mark  => ' ', :remainder_mark => "\u{FF65}", :starting_at => 1)
@@ -18,6 +20,7 @@ namespace :db do
         Customer.find_or_create_by(row.to_h)
       end
     end
+
     desc "Seed invoices in database"
     task :seed_invoices => :environment do
       pbar = ProgressBar.create(:title => "Invoices", :total => (CSV.read('./db/csv/invoices.csv')).count, :format => "%a %b\u{15E7}%i %p%% %t", :progress_mark  => ' ', :remainder_mark => "\u{FF65}", :starting_at => 1)
@@ -26,6 +29,7 @@ namespace :db do
         Invoice.find_or_create_by(row.to_h)
       end
     end
+
     desc "Seed transactions in database"
     task :seed_transactions => :environment do
       pbar = ProgressBar.create(:title => "Transactions", :total => (CSV.read('./db/csv/transactions.csv')).count, :format => "%a %b\u{15E7}%i %p%% %t", :progress_mark  => ' ', :remainder_mark => "\u{FF65}", :starting_at => 1)
@@ -44,7 +48,6 @@ namespace :db do
       end
     end
 
-
     desc "Seed invoice_items in database"
     task :seed_invoice_items => :environment do
       pbar = ProgressBar.create(:title => "Invoice Items", :total => (CSV.read('./db/csv/invoice_items.csv')).count, :format => "%a %b\u{15E7}%i %p%% %t", :progress_mark  => ' ', :remainder_mark => "\u{FF65}", :starting_at => 1)
@@ -53,8 +56,6 @@ namespace :db do
         InvoiceItem.find_or_create_by(row.to_h)
       end
     end
-
-
   end
 end
 

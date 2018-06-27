@@ -73,7 +73,7 @@ describe "Invoices API" do
 
         data = JSON.parse(response.body)
 
-        expect(data).to eq(json_with_soft_time(transactions).reverse)
+        expect(data).to eq(json_with_soft_time(transactions))
         expect(data).to_not eq(json_with_soft_time(sad_transactions))
       end
     end

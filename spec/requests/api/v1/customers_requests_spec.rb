@@ -161,7 +161,7 @@ RSpec.describe 'Customers Requests' do
       expect(data.count).to eq(Transaction.all.count)
       expect(data.first["result"]).to eq(Transaction.first.result)
       expect(data.last["result"]).to eq(Transaction.last.result)
-      expect(data).to eq(json_with_soft_time(Transaction.all.reverse))
+      expect(data).to eq(json_with_soft_time(Transaction.all))
     end
   end
 end

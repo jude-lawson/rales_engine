@@ -93,4 +93,32 @@ describe "Items API" do
       end
     end
   end
+
+  describe 'Business Intelligence Endpoints' do
+    it 'should show a collection of items with most revenue ranked by total revenue' do
+      merchant = create(:merchant)
+      customer = create(:customer)
+      invoice_list = create_list(:invoice, 5, merchant: merchant, customer: customer)
+      item1 = Item.create!(name: "Thing", description: "Things", unit_price: 1500, merchant_id: merchant.id)
+      item2 = Item.create!(name: "Thing2", description: "Things", unit_price: 2000, merchant_id: merchant.id)
+      item3 = Item.create!(name: "Thing3", description: "Things", unit_price: 2500, merchant_id: merchant.id)
+      item4 = Item.create!(name: "Thing4", description: "Things", unit_price: 1500, merchant_id: merchant.id)
+      create(:invoice_item, item: item1, unit_price: item1.unit_price, quantity: 10, invoice: invoice_list[0])
+      create(:invoice_item, item: item2, unit_price: item2.unit_price, quantity: 10, invoice: invoice_list[1])
+      create(:invoice_item, item: item3, unit_price: item3.unit_price, quantity: 10, invoice: invoice_list[2])
+      create(:invoice_item, item: item4, unit_price: item4.unit_price, quantity: 10, invoice: invoice_list[3])
+      create(:transaction, invoice: invoice_list[0])
+      create(:transaction, invoice: invoice_list[1])
+      create(:transaction, invoice: invoice_list[2])
+      create(:transaction, invoice: invoice_list[3], result: "failed")
+
+      get '/api/v1/items/most_revenue?quantity=4'
+
+      data = JSON.parse(response.body)
+      expect(data.count).to eq(3)
+      expect(data.first["name"]).to eq(item3.name)
+      expect(data.last["name"]).to eq(item1.name)
+      expect(data[1]["name"]).to eq(item2.name)
+    end
+  end
 end
