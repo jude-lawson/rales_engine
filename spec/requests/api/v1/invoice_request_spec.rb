@@ -121,7 +121,7 @@ describe "Invoices API" do
     end
 
     describe '/api/v1/invoices/:id/customer' do
-      it 'should return a collection of all associated customers' do
+      it 'should return the invoice\'s associated customer' do
         customer = create(:customer)
         create(:merchant)
         create(:item)
@@ -136,6 +136,25 @@ describe "Invoices API" do
 
         expect(data).to eq(json_with_soft_time(customer))
         expect(data).to_not eq(json_with_soft_time(sad_customer))
+      end
+    end
+
+    describe '/api/v1/invoices/:id/merchant' do
+      it 'should return the invoice\'s associated merchant' do
+        create(:customer)
+        merchant = create(:merchant)
+        create(:item)
+        invoice = create(:invoice, merchant_id: merchant.id)
+
+        sad_merchant = create(:merchant)
+        sad_invoice = create(:invoice, merchant_id: sad_merchant.id)
+
+        get "/api/v1/invoices/#{invoice.id}/merchant"
+
+        data = JSON.parse(response.body)
+
+        expect(data).to eq(json_with_soft_time(merchant))
+        expect(data).to_not eq(json_with_soft_time(sad_merchant))
       end
     end
   end
