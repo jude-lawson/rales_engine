@@ -147,7 +147,7 @@ RSpec.describe 'Customers Requests' do
       expect(data.count).to eq(Invoice.all.count)
       expect(data.first["status"]).to eq(Invoice.first.status)
       expect(data.last["status"]).to eq(Invoice.last.status)
-      expect(data).to eq(json_with_soft_time(Invoice.all.reverse))
+      expect(data).to eq(json_with_soft_time(Invoice.all))
     end
 
     it 'should return a collection of associated transactions' do
