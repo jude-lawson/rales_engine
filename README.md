@@ -12,15 +12,19 @@
 
   To get put this project on your own machine, follow these steps:
   1. Clone down the project from this repository, or fork it from this repository to your own.
-    ```shell
+  
+  ```shell
     git clone 
     git@github.com:jude-lawson/rales_engine.git 
     ```
+    
   2. Once the project has been cloned into your folder, navigate to that folder and run
-    ```
+  
+    ```shell
     bundle install
     bundle update
     ```
+    
   3. Once the gems have finished updating, you can create the Postgres database and tables by running 
     ```rake db:{create,migrate}```
   4. After creating the database, we need to seed the database with the information contained in the CSV files located in db/csv. To do this, we have built a rake task. Run this rake task by running
