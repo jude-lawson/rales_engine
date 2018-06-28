@@ -178,7 +178,7 @@ describe "Items API" do
         failed_invoice_item2 = create(:invoice_item, quantity: 1, invoice: failed_invoice2, item: item)
         create(:transaction, invoice: failed_invoice)
         create(:transaction, invoice: failed_invoice2)
-        
+
         # Sell two of item1 yesterday
         earlier_invoice = create(:invoice, created_at: DateTime.yesterday)
         earlier_invoice2 = create(:invoice, created_at: DateTime.yesterday)
@@ -193,13 +193,13 @@ describe "Items API" do
         sad_invoice_item = create(:invoice_item, quantity: 1, invoice: sad_invoice, item: sad_item)
         create(:transaction, invoice: sad_invoice)
 
-        best_day = invoice.created_at.iso8601(fraction_digits=3)
+        best_day = invoice2.created_at.iso8601(fraction_digits=3)
         earlier_day = earlier_invoice.created_at.iso8601(fraction_digits=3)
 
         get "/api/v1/items/#{item.id}/best_day"
-
-        expect(response_data).to eq(best_day)
-        expect(response_data).to_not eq(earlier_day)  
+        
+        expect(response_data).to eq({best_day: best_day}.as_json)
+        expect(response_data).to_not eq({best_day: earlier_day}.as_json)
       end
     end
   end

@@ -164,4 +164,26 @@ RSpec.describe 'Customers Requests' do
       expect(data).to eq(json_with_soft_time(Transaction.all))
     end
   end
+
+  describe 'Business intelligence' do
+    it 'should return the customers favorite merchant' do
+      customer = create(:customer)
+      merchant = create(:merchant)
+      merchant2 = create(:merchant)
+
+      invoices = create_list(:invoice, 3, merchant: merchant, customer: customer)
+      invoice2 = create(:invoice, merchant: merchant2, customer: customer)
+
+      create(:transaction, invoice: invoices[0])
+      create(:transaction, invoice: invoices[1])
+      create(:transaction, invoice: invoices[2])
+      create(:transaction, invoice: invoice2)
+
+      get "/api/v1/customers/#{customer.id}/favorite_merchant"
+
+      expect(response_data).to eq(json_with_soft_time(merchant))
+      expect(response_data).to_not eq(json_with_soft_time(merchant2))
+    end
+  end
+
 end
