@@ -230,5 +230,53 @@ RSpec.describe 'Merchants Endpoints' do
 
       expect(response_data).to eq({total_revenue: "75.0"}.as_json)
     end
+
+    it 'can return favorite customer for a merchant' do
+      merchant = create(:merchant)
+      merchant2 = create(:merchant)
+      customer1 = create(:customer, first_name: 'Bob')
+      customer2 = create(:customer, first_name: 'Sally')
+      invoice = create(:invoice, customer: customer1, merchant: merchant, created_at: "2012-03-16")
+      invoice3 = create(:invoice, customer: customer2, merchant: merchant2)
+      create(:invoice_item, quantity: 15, invoice: invoice, unit_price: 500)
+      create(:transaction, invoice: invoice, result: 'success')
+      create(:transaction, invoice: invoice3, result: 'success')
+
+      get "/api/v1/merchants/#{merchant.id}/favorite_customer"
+
+      expect(response_data).to eq("")
+    end
+
+    it 'can return the total revenue for that mercahnt for a specific invoice on a date' do
+      merchant = create(:merchant)
+      merchant2 = create(:merchant)
+      customer1 = create(:customer, first_name: 'Bob')
+      customer2 = create(:customer, first_name: 'Sally')
+      invoice = create(:invoice, customer: customer1, merchant: merchant, created_at: "2012-03-16")
+      invoice3 = create(:invoice, customer: customer2, merchant: merchant2)
+      create(:invoice_item, quantity: 15, invoice: invoice, unit_price: 500)
+      create(:transaction, invoice: invoice, result: 'success')
+      create(:transaction, invoice: invoice3, result: 'success')
+
+      get "/api/v1/merchants/#{merchant.id}/revenue?date=2012-03-16"
+
+      expect(response_data).to eq("")
+    end
+
+    it 'can return revenue for a merchant across all successful transactions' do
+      merchant = create(:merchant)
+      merchant2 = create(:merchant)
+      customer1 = create(:customer, first_name: 'Bob')
+      customer2 = create(:customer, first_name: 'Sally')
+      invoice = create(:invoice, customer: customer1, merchant: merchant, created_at: "2012-03-16")
+      invoice3 = create(:invoice, customer: customer2, merchant: merchant2)
+      create(:invoice_item, quantity: 15, invoice: invoice, unit_price: 500)
+      create(:transaction, invoice: invoice, result: 'success')
+      create(:transaction, invoice: invoice3, result: 'success')
+
+      get "/api/v1/merchants/#{merchant.id}/revenue"
+
+      expect(response_data).to eq("")
+    end
   end
 end

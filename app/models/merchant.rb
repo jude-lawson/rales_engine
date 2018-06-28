@@ -40,4 +40,23 @@ class Merchant < ApplicationRecord
     .where(invoices: { created_at: date.to_date.beginning_of_day..date.to_date.end_of_day })
     .sum("invoice_items.quantity * invoice_items.unit_price")
   end
+
+  def self.total_revenue(merchant_id)
+    joins(:invoices, invoices: [:invoice_items, :transactions])
+    .where(transactions: {result: 'success' })
+    .where("merchants.id = ?", merchant_id)
+    .sum("invoice_items.quantity * invoice_items.unit_price")
+  end
+
+  def self.revenue_by_date(date, merchant_id)
+    joins(:invoices, invoices: [:invoice_items, :transactions])
+    .where(transactions: {result: 'success' })
+    .where("merchants.id = ?", merchant_id)
+    .where(invoices: { created_at: date.to_date.beginning_of_day..date.to_date.end_of_day })
+    .sum("invoice_items.quantity * invoice_items.unit_price")
+  end
+
+  def self.convert_to_string(result)
+    ((result.to_f) * 0.01).to_s
+  end
 end
