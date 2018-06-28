@@ -17,10 +17,11 @@ class Item < ApplicationRecord
 
   def self.most_items(params)
     return { "error" => "Please pass in '?quantity=<integer>' to search for a number of most items by rank" } if params.keys.first != 'quantity'
-    
-    joins(:invoice_items)
-      .order('SUM(invoice_items.quantity) DESC')
+
+    joins(:invoices, invoices: [:transactions])
+      .merge(Transaction.unscoped.successful)
       .group(:id)
-      .limit(params[:quantity])
+      .order('sum(invoice_items.quantity) DESC')
+      .limit(1)
   end
 end
