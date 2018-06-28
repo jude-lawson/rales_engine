@@ -181,6 +181,54 @@ RSpec.describe 'Merchants Endpoints' do
       expect(data.first["first_name"]).to eq(customer1.first_name)
       expect(data.first["last_name"]).to eq(customer1.last_name)
     end
-  end
 
+    xit 'can return top merchants ranked by revenue' do
+      merchant = create(:merchant)
+      merchant2 = create(:merchant)
+      merchant3 = create(:merchant)
+      customer1 = create(:customer, first_name: 'Bob')
+      customer2 = create(:customer, first_name: 'Sally')
+      invoice = create(:invoice, customer: customer1, merchant: merchant)
+      invoice3 = create(:invoice, customer: customer2, merchant: merchant2)
+      create(:invoice_item, quantity: 15, invoice: invoice)
+      create(:transaction, invoice: invoice, result: 'success')
+      create(:transaction, invoice: invoice3, result: 'success')
+
+      get '/api/v1/merchants/most_revenue?quantity=2'
+
+      expect(response_data).to eq([json_with_soft_time(merchant), json_with_soft_time(merchant2)])
+    end
+
+    it 'can return top merchants ranked by items sold' do
+      merchant = create(:merchant)
+      merchant2 = create(:merchant)
+      customer1 = create(:customer, first_name: 'Bob')
+      customer2 = create(:customer, first_name: 'Sally')
+      invoice = create(:invoice, customer: customer1, merchant: merchant)
+      invoice3 = create(:invoice, customer: customer2, merchant: merchant2)
+      create(:invoice_item, quantity: 15, invoice: invoice)
+      create(:transaction, invoice: invoice, result: 'success')
+      create(:transaction, invoice: invoice3, result: 'success')
+
+      get '/api/v1/merchants/most_revenue?quantity=1'
+
+      expect(response_data).to eq([json_with_soft_time(merchant)])
+    end
+
+    it 'can return revenue for all merchants on a specific day' do
+      merchant = create(:merchant)
+      merchant2 = create(:merchant)
+      customer1 = create(:customer, first_name: 'Bob')
+      customer2 = create(:customer, first_name: 'Sally')
+      invoice = create(:invoice, customer: customer1, merchant: merchant, created_at: "2012-03-16")
+      invoice3 = create(:invoice, customer: customer2, merchant: merchant2)
+      create(:invoice_item, quantity: 15, invoice: invoice, unit_price: 500)
+      create(:transaction, invoice: invoice, result: 'success')
+      create(:transaction, invoice: invoice3, result: 'success')
+
+      get '/api/v1/merchants/revenue?date=2012-03-16'
+
+      expect(response_data).to eq({total_revenue: "75.0"}.as_json)
+    end
+  end
 end
