@@ -19,7 +19,7 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions))
+      expect(data).to eq(json_without_time(@transactions))
     end
   end
 
@@ -30,7 +30,7 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions[0]))
+      expect(data).to eq(json_without_time(@transactions[0]))
     end
   end
 
@@ -41,7 +41,7 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions[1]))
+      expect(data).to eq(json_without_time(@transactions[1]))
     end
 
     it 'should be able to return a single record found by credit card number' do
@@ -50,7 +50,7 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions[0]))
+      expect(data).to eq(json_without_time(@transactions[0]))
     end
 
     it 'should be able to return a single record found by result' do
@@ -59,7 +59,7 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions[0]))
+      expect(data).to eq(json_without_time(@transactions[0]))
     end
       
     it 'should be able to return an single record found by created date' do
@@ -68,7 +68,7 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions[0]))
+      expect(data).to eq(json_without_time(@transactions[0]))
     end
 
     it 'should be able to return an single record found by updated date' do
@@ -77,7 +77,7 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions[0]))
+      expect(data).to eq(json_without_time(@transactions[0]))
     end
   end
 
@@ -88,8 +88,8 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time([@transactions[0]]))
-      expect(data).to_not eq(json_with_soft_time([@transactions[1]]))
+      expect(data).to eq(json_without_time([@transactions[0]]))
+      expect(data).to_not eq(json_without_time([@transactions[1]]))
     end
 
     it 'should be able to return a collection using credit_card_number' do
@@ -99,8 +99,8 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
       
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions))
-      expect(data).to_not eq(json_with_soft_time(sad_transaction))
+      expect(data).to eq(json_without_time(@transactions))
+      expect(data).to_not eq(json_without_time(sad_transaction))
     end
     
     it 'should be able to return a collection using result' do
@@ -110,8 +110,8 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
       
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions))
-      expect(data).to_not eq(json_with_soft_time(sad_transaction))
+      expect(data).to eq(json_without_time(@transactions))
+      expect(data).to_not eq(json_without_time(sad_transaction))
     end
     
     it 'should be able to return a collection using created_at' do
@@ -121,8 +121,8 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
       
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions))
-      expect(data).to_not eq(json_with_soft_time(sad_transaction))
+      expect(data).to eq(json_without_time(@transactions))
+      expect(data).to_not eq(json_without_time(sad_transaction))
     end
     
     it 'should be able to return a collection using updated_at' do
@@ -132,8 +132,8 @@ RSpec.describe 'Transactions Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@transactions))
-      expect(data).to_not eq(json_with_soft_time(sad_transaction))
+      expect(data).to eq(json_without_time(@transactions))
+      expect(data).to_not eq(json_without_time(sad_transaction))
     end
   end
 

@@ -72,8 +72,8 @@ describe "Items API" do
 
         data = JSON.parse(response.body)
 
-        expect(data).to eq(json_with_soft_time(invoice_items))
-        expect(data).to_not eq(json_with_soft_time(sad_invoice_item))
+        expect(data).to eq(json_without_time(invoice_items))
+        expect(data).to_not eq(json_without_time(sad_invoice_item))
       end
     end
 
@@ -88,8 +88,8 @@ describe "Items API" do
 
         data = JSON.parse(response.body)
 
-        expect(data).to eq(json_with_soft_time(merchant))
-        expect(data).to_not eq(json_with_soft_time(sad_merchant))
+        expect(data).to eq(json_without_time(merchant))
+        expect(data).to_not eq(json_without_time(sad_merchant))
       end
     end
   end
@@ -147,8 +147,8 @@ describe "Items API" do
 
         get '/api/v1/items/most_items?quantity=2'
 
-        expect(response_data).to eq(json_with_soft_time([item1, item2]))
-        expect(response_data).to_not eq(json_with_soft_time([sad_item]))
+        expect(response_data).to eq(json_without_time([item1, item2]))
+        expect(response_data).to_not eq(json_without_time([sad_item]))
       end
 
       it 'should return error message if quantity param is not provided' do

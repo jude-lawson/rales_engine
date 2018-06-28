@@ -80,8 +80,8 @@ describe "Invoice_items API" do
 
         data = JSON.parse(response.body)
 
-        expect(data).to eq(json_with_soft_time(invoice))
-        expect(data).to_not eq(json_with_soft_time(sad_invoice))
+        expect(data).to eq(json_without_time(invoice))
+        expect(data).to_not eq(json_without_time(sad_invoice))
       end
     end
 
@@ -97,8 +97,8 @@ describe "Invoice_items API" do
 
         data = JSON.parse(response.body)
 
-        expect(data).to eq(json_with_soft_time(item))
-        expect(data).to_not eq(json_with_soft_time(sad_item))
+        expect(data).to eq(json_without_time(item))
+        expect(data).to_not eq(json_without_time(sad_item))
       end
     end
   end

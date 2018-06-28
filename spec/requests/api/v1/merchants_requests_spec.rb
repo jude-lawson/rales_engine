@@ -15,7 +15,7 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@merchants))
+      expect(data).to eq(json_without_time(@merchants))
     end
   end
 
@@ -27,7 +27,7 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(merchant))
+      expect(data).to eq(json_without_time(merchant))
     end
   end
 
@@ -38,7 +38,7 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@merchants[1]))
+      expect(data).to eq(json_without_time(@merchants[1]))
     end
 
     it 'should be able to return a single record by its name' do
@@ -47,7 +47,7 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@merchants[0]))
+      expect(data).to eq(json_without_time(@merchants[0]))
     end
 
     it 'should be able to return a single record by its created_at datetime' do
@@ -57,8 +57,8 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
       
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@merchants[0]))
-      expect(data).to_not eq(json_with_soft_time(early_merchant))
+      expect(data).to eq(json_without_time(@merchants[0]))
+      expect(data).to_not eq(json_without_time(early_merchant))
     end
     
     it 'should be able to return an single record by its updated_at datetime' do
@@ -69,8 +69,8 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@merchants[0]))
-      expect(data).to_not eq(json_with_soft_time(early_merchant))
+      expect(data).to eq(json_without_time(@merchants[0]))
+      expect(data).to_not eq(json_without_time(early_merchant))
     end
   end
 
@@ -81,7 +81,7 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time([@merchants[0]]))
+      expect(data).to eq(json_without_time([@merchants[0]]))
     end
 
     it 'should be able to return multiple records by name' do
@@ -93,8 +93,8 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time([a_merchant, duplicate_merchant]))
-      expect(data).to_not eq(json_with_soft_time(@merchants[1]))
+      expect(data).to eq(json_without_time([a_merchant, duplicate_merchant]))
+      expect(data).to_not eq(json_without_time(@merchants[1]))
     end
 
     it 'sould be able to return multiple records by created_at' do
@@ -105,8 +105,8 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@merchants))
-      expect(data).to_not eq(json_with_soft_time(early_merchant))
+      expect(data).to eq(json_without_time(@merchants))
+      expect(data).to_not eq(json_without_time(early_merchant))
     end
 
     it 'sould be able to return multiple records by updated_at' do
@@ -117,8 +117,8 @@ RSpec.describe 'Merchants Endpoints' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@merchants))
-      expect(data).to_not eq(json_with_soft_time(early_merchant))
+      expect(data).to eq(json_without_time(@merchants))
+      expect(data).to_not eq(json_without_time(early_merchant))
     end
   end
 
@@ -196,7 +196,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       get '/api/v1/merchants/most_revenue?quantity=2'
 
-      expect(response_data).to eq([json_with_soft_time(merchant), json_with_soft_time(merchant2)])
+      expect(response_data).to eq([json_without_time(merchant), json_without_time(merchant2)])
     end
 
     it 'can return top merchants ranked by items sold' do
@@ -212,7 +212,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       get '/api/v1/merchants/most_revenue?quantity=1'
 
-      expect(response_data).to eq([json_with_soft_time(merchant)])
+      expect(response_data).to eq([json_without_time(merchant)])
     end
 
     it 'can return revenue for all merchants on a specific day' do

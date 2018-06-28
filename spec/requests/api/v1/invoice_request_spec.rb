@@ -73,8 +73,8 @@ describe "Invoices API" do
 
         data = JSON.parse(response.body)
 
-        expect(data).to eq(json_with_soft_time(transactions))
-        expect(data).to_not eq(json_with_soft_time(sad_transactions))
+        expect(data).to eq(json_without_time(transactions))
+        expect(data).to_not eq(json_without_time(sad_transactions))
       end
     end
 
@@ -92,8 +92,8 @@ describe "Invoices API" do
 
         data = JSON.parse(response.body)
 
-        expect(data).to eq(json_with_soft_time(invoice_items))
-        expect(data).to_not eq(json_with_soft_time(sad_invoice_items))
+        expect(data).to eq(json_without_time(invoice_items))
+        expect(data).to_not eq(json_without_time(sad_invoice_items))
       end
     end
 
@@ -115,8 +115,8 @@ describe "Invoices API" do
 
         data = JSON.parse(response.body)
         
-        expect(data).to eq(json_with_soft_time([item, another_item]))
-        expect(data).to_not eq(json_with_soft_time([sad_item]))
+        expect(data).to eq(json_without_time([item, another_item]))
+        expect(data).to_not eq(json_without_time([sad_item]))
       end
     end
 
@@ -134,8 +134,8 @@ describe "Invoices API" do
 
         data = JSON.parse(response.body)
 
-        expect(data).to eq(json_with_soft_time(customer))
-        expect(data).to_not eq(json_with_soft_time(sad_customer))
+        expect(data).to eq(json_without_time(customer))
+        expect(data).to_not eq(json_without_time(sad_customer))
       end
     end
 
@@ -153,8 +153,8 @@ describe "Invoices API" do
 
         data = JSON.parse(response.body)
 
-        expect(data).to eq(json_with_soft_time(merchant))
-        expect(data).to_not eq(json_with_soft_time(sad_merchant))
+        expect(data).to eq(json_without_time(merchant))
+        expect(data).to_not eq(json_without_time(sad_merchant))
       end
     end
   end

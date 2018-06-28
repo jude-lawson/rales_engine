@@ -15,7 +15,7 @@ RSpec.describe 'Customers Requests' do
       data = JSON.parse(response.body)
 
       expect(response).to be_successful
-      expect(data).to eq(json_with_soft_time(@customers))
+      expect(data).to eq(json_without_time(@customers))
     end
   end
 
@@ -25,7 +25,7 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers[0]))
+      expect(data).to eq(json_without_time(@customers[0]))
     end
   end
 
@@ -35,7 +35,7 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers[0]))
+      expect(data).to eq(json_without_time(@customers[0]))
     end
 
     it 'should be able to return a single record by first name' do
@@ -43,7 +43,7 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers[0]))
+      expect(data).to eq(json_without_time(@customers[0]))
     end
 
     it 'should be able to return a single record by last name' do
@@ -51,7 +51,7 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers[0]))
+      expect(data).to eq(json_without_time(@customers[0]))
     end
 
     it 'should be able to return a single record by created date' do
@@ -59,7 +59,7 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers[0]))
+      expect(data).to eq(json_without_time(@customers[0]))
     end
 
     it 'should be able to return a single record by updated date' do
@@ -67,7 +67,7 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers[0]))
+      expect(data).to eq(json_without_time(@customers[0]))
     end
   end
 
@@ -77,8 +77,8 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time([@customers[0]]))
-      expect(data).to_not eq(json_with_soft_time([@customers[2]]))
+      expect(data).to eq(json_without_time([@customers[0]]))
+      expect(data).to_not eq(json_without_time([@customers[2]]))
     end
 
     it 'should be able to return a collection of transactions from first name' do
@@ -87,8 +87,8 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers))
-      expect(data).to_not eq(json_with_soft_time([sad_customer]))
+      expect(data).to eq(json_without_time(@customers))
+      expect(data).to_not eq(json_without_time([sad_customer]))
     end
 
     it 'should be able to return a collection of transactions from last name' do
@@ -97,8 +97,8 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers))
-      expect(data).to_not eq(json_with_soft_time([sad_customer]))
+      expect(data).to eq(json_without_time(@customers))
+      expect(data).to_not eq(json_without_time([sad_customer]))
     end
 
     it 'should be able to return a collection of transactions from created date' do
@@ -107,8 +107,8 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers))
-      expect(data).to_not eq(json_with_soft_time([sad_customer]))
+      expect(data).to eq(json_without_time(@customers))
+      expect(data).to_not eq(json_without_time([sad_customer]))
     end
 
     it 'should be able to return a collection of transactions from update date' do
@@ -117,8 +117,8 @@ RSpec.describe 'Customers Requests' do
 
       data = JSON.parse(response.body)
 
-      expect(data).to eq(json_with_soft_time(@customers))
-      expect(data).to_not eq(json_with_soft_time([sad_customer]))
+      expect(data).to eq(json_without_time(@customers))
+      expect(data).to_not eq(json_without_time([sad_customer]))
     end
   end
 
@@ -147,7 +147,7 @@ RSpec.describe 'Customers Requests' do
       expect(data.count).to eq(Invoice.all.count)
       expect(data.first["status"]).to eq(Invoice.first.status)
       expect(data.last["status"]).to eq(Invoice.last.status)
-      expect(data).to eq(json_with_soft_time(Invoice.all))
+      expect(data).to eq(json_without_time(Invoice.all))
     end
 
     it 'should return a collection of associated transactions' do
@@ -161,7 +161,7 @@ RSpec.describe 'Customers Requests' do
       expect(data.count).to eq(Transaction.all.count)
       expect(data.first["result"]).to eq(Transaction.first.result)
       expect(data.last["result"]).to eq(Transaction.last.result)
-      expect(data).to eq(json_with_soft_time(Transaction.all))
+      expect(data).to eq(json_without_time(Transaction.all))
     end
   end
 
@@ -181,8 +181,8 @@ RSpec.describe 'Customers Requests' do
 
       get "/api/v1/customers/#{customer.id}/favorite_merchant"
 
-      expect(response_data).to eq(json_with_soft_time(merchant))
-      expect(response_data).to_not eq(json_with_soft_time(merchant2))
+      expect(response_data).to eq(json_without_time(merchant))
+      expect(response_data).to_not eq(json_without_time(merchant2))
     end
   end
 
