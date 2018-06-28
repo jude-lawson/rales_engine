@@ -9,50 +9,50 @@ class Merchant < ApplicationRecord
   def self.favorite_merchant_by_customer(customer_id)
     select("merchants.*")
             .joins(:invoices, :transactions, :customers)
-            .where("customers.id = ? AND transactions.result = ?", customer_id, 'success')
+            .where("customers.id = ? AND transactions.result = ?", customer_id.to_i, 'success')
             .group(:id)
             .order("COUNT(transactions.id) DESC")
             .limit(1)
             .first
   end
 
-  def self.most_revenue(quantity)
+  def self.most_revenue(quantity_hash)
     select("merchants.*")
     .joins(:invoices, invoices: [:invoice_items, :transactions])
     .where(transactions: {result: 'success' })
     .order("SUM(invoice_items.quantity * invoice_items.unit_price)  DESC")
     .group(:id)
-    .limit(quantity)
+    .limit(quantity_hash[:quantity].to_i)
   end
 
-  def self.most_items(quantity)
+  def self.most_items(quantity_hash)
     select("merchants.*")
     .joins(:invoices, invoices: [:invoice_items, :transactions])
     .where(transactions: {result: 'success' })
     .order("SUM(invoice_items.quantity)  DESC")
     .group(:id)
-    .limit(quantity)
+    .limit(quantity_hash[:quantity].to_i)
   end
 
-  def self.total_revenue_by_date(date)
+  def self.total_revenue_by_date(date_hash)
     joins(:invoices, invoices: [:invoice_items, :transactions])
     .where(transactions: {result: 'success' })
-    .where(invoices: { created_at: date.to_date.beginning_of_day..date.to_date.end_of_day })
+    .where(invoices: { created_at: date_hash[:date].to_date.beginning_of_day..date_hash[:date].to_date.end_of_day })
     .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 
-  def self.total_revenue(merchant_id)
+  def self.total_revenue(merchant_id_hash)
     joins(:invoices, invoices: [:invoice_items, :transactions])
     .where(transactions: {result: 'success' })
-    .where("merchants.id = ?", merchant_id)
+    .where("merchants.id = ?", merchant_id_hash[:id].to_i)
     .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 
-  def self.revenue_by_date(date, merchant_id)
+  def self.revenue_by_date(params_hash)
     joins(:invoices, invoices: [:invoice_items, :transactions])
     .where(transactions: {result: 'success' })
-    .where("merchants.id = ?", merchant_id)
-    .where(invoices: { created_at: date.to_date.beginning_of_day..date.to_date.end_of_day })
+    .where("merchants.id = ?", params_hash[:id].to_i)
+    .where(invoices: { created_at: params_hash[:date].to_date.beginning_of_day..params_hash[:date].to_date.end_of_day })
     .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 

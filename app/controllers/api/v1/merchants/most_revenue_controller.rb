@@ -1,5 +1,6 @@
 class Api::V1::Merchants::MostRevenueController < ApplicationController
+  include MerchantParams
   def index
-    render json: Merchant.most_revenue(params[:quantity].to_i)
+    render json: Merchant.most_revenue(search_params)
   end
 end
