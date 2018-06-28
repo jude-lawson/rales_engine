@@ -1,12 +1,15 @@
 #Rales Engine
+
 ####Collaborators: Judson Stevens and Jude Dutton
 
 ##Summary of Project
+
   In this project, we were challenged to take large files of data and set up an API only Rails app that would respond to different user queries and requests. The responses should include relevant information about the request, including records and other business "intelligence" operations. The rubric and guide to the project is linked below. 
   
   The Rales Engine project was an exploration of how to serve up data as an API, which is of course an integral part of almost every web application.
 
 ##Setup & Installation
+
   To get put this project on your own machine, follow these steps:
   1. Clone down the project from this repository, or fork it from this repository to your own.
     `git clone git@github.com:jude-lawson/rales_engine.git`
@@ -25,4 +28,5 @@
   8. Once you see the Rails welcome page, you can start to interact with the data using the endpoints located in the rubric and guide linked below.
   
 ##Rubric and Guide
+
   http://backend.turing.io/module3/projects/rails_engine
