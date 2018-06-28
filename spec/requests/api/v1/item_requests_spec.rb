@@ -181,6 +181,8 @@ describe "Items API" do
         earlier_day = earlier_invoice.created_at.iso8601(fraction_digits=3)
 
         get "/api/v1/items/#{item.id}/best_day"
+
+        # require 'pry';binding.pry
         
         expect(response_data).to eq({best_day: best_day}.as_json)
         expect(response_data).to_not eq({best_day: earlier_day}.as_json)

@@ -194,7 +194,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       get '/api/v1/merchants/most_revenue?quantity=2'
 
-      expect(response_data).to eq([json_without_time(merchant), json_without_time(merchant2)])
+      expect(response_data).to eq(json_without_time([merchant]))
     end
 
     it 'can return top merchants ranked by items sold' do
