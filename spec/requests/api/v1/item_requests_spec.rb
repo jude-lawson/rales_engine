@@ -159,7 +159,31 @@ describe "Items API" do
 
     describe '/api/v1/items/:id/best_day' do
       it 'should return the most recent date with the most sales for the given item using the invoice date' do
+        # Sell two of item today
+        item = create(:item)
+        invoice = create(:invoice)
+        invoice2 = create(:invoice)
+        invoice_item = create(:invoice_item, quantity: 1, invoice: invoice, item: item)
+        invoice_item2 = create(:invoice_item, quantity: 1, invoice: invoice2, item: item)
         
+        # Sell two of item1 yesterday
+        earlier_invoice = create(:invoice, created_at: DateTime.yesterday)
+        earlier_invoice2 = create(:invoice, created_at: DateTime.yesterday)
+        earlier_invoice_item = create(:invoice_item, quantity: 1, invoice: earlier_invoice, item: item)
+        earlier_invoice_item = create(:invoice_item, quantity: 1, invoice: earlier_invoice2, item: item)
+
+        # Sell 1 of item2 today
+        sad_item = create(:item)
+        sad_invoice = create(:invoice)
+        sad_invoice_item = create(:invoice_item, quantity: 1, invoice: sad_invoice, item: sad_item)
+
+        best_day = invoice.created_at.iso8601(fraction_digits=3)
+        earlier_day = earlier_invoice.created_at.iso8601(fraction_digits=3)
+
+        get "/api/v1/items/#{item.id}/best_day"
+
+        expect(response_data).to eq({ best_day: best_day }.as_json)
+        expect(response_data).to_not eq({ best_day: earlier_day }.as_json)  
       end
     end
   end
