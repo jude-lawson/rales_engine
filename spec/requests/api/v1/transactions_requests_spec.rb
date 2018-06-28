@@ -148,10 +148,7 @@ RSpec.describe 'Transactions Requests' do
       expect(data).to have_key('id')
       expect(data).to have_key('invoice_id')
       expect(data).to have_key('credit_card_number')
-      expect(data).to have_key('credit_card_expiration_date')
       expect(data).to have_key('result')
-      expect(data).to have_key('created_at')
-      expect(data).to have_key('updated_at')
     end
   end
 

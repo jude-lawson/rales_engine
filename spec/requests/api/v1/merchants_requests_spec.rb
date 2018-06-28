@@ -132,8 +132,6 @@ RSpec.describe 'Merchants Endpoints' do
       expect(data.class).to eq(Hash)
       expect(data).to have_key('id')
       expect(data).to have_key('name')
-      expect(data).to have_key('created_at')
-      expect(data).to have_key('updated_at')
     end
   end
 
@@ -147,7 +145,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       expect(data.length).to eq(1)
       expect(data.first["name"]).to eq("#{Item.last.name}")
-      expect(data.first["unit_price"]).to eq(Item.last.unit_price)
+      expect(data.first["unit_price"]).to eq(((Item.last.unit_price.to_f)* 0.01).to_s)
       expect(data.first["description"]).to eq("#{Item.last.description}")
     end
 
@@ -182,7 +180,7 @@ RSpec.describe 'Merchants Endpoints' do
       expect(data.first["last_name"]).to eq(customer1.last_name)
     end
 
-    xit 'can return top merchants ranked by revenue' do
+    it 'can return top merchants ranked by revenue' do
       merchant = create(:merchant)
       merchant2 = create(:merchant)
       merchant3 = create(:merchant)
@@ -244,7 +242,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       get "/api/v1/merchants/#{merchant.id}/favorite_customer"
 
-      expect(response_data).to eq("")
+      expect(response_data).to eq(json_without_time(customer1))
     end
 
     it 'can return the total revenue for that mercahnt for a specific invoice on a date' do
@@ -260,7 +258,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       get "/api/v1/merchants/#{merchant.id}/revenue?date=2012-03-16"
 
-      expect(response_data).to eq("")
+      expect(response_data).to eq({ revenue: "75.0"}.as_json)
     end
 
     it 'can return revenue for a merchant across all successful transactions' do
@@ -276,7 +274,7 @@ RSpec.describe 'Merchants Endpoints' do
 
       get "/api/v1/merchants/#{merchant.id}/revenue"
 
-      expect(response_data).to eq("")
+      expect(response_data).to eq({revenue: "75.0"}.as_json)
     end
   end
 end

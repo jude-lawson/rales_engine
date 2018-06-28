@@ -54,8 +54,6 @@ describe "Invoices API" do
       expect(data).to have_key('customer_id')
       expect(data).to have_key('merchant_id')
       expect(data).to have_key('status')
-      expect(data).to have_key('created_at')
-      expect(data).to have_key('updated_at')
     end
   end
 

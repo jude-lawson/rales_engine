@@ -113,11 +113,25 @@ def json_without_time(collection)
   json_collection = collection.as_json
   if json_collection.class == Array
     json_collection.each do |record|
+      if record.keys.include?("credit_card_number")
+        record["credit_card_number"] = record["credit_card_number"].to_s
+        record.delete("credit_card_expiration_date")
+      end
+      if record.keys.include?("unit_price")
+        record["unit_price"] = ((record["unit_price"].to_f) * 0.01).to_s
+      end
       record.delete("created_at")
       record.delete("updated_at")
     end
   else
     # json_collection is not collection, but singular hash
+    if json_collection.keys.include?("credit_card_number")
+      json_collection["credit_card_number"] = json_collection["credit_card_number"].to_s
+      json_collection.delete("credit_card_expiration_date")
+    end
+    if json_collection.keys.include?("unit_price")
+      json_collection["unit_price"] = ((json_collection["unit_price"].to_f) * 0.01).to_s
+    end
     json_collection.delete("created_at")
     json_collection.delete("updated_at")
   end

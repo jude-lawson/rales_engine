@@ -20,7 +20,7 @@ describe "Items API" do
 
     expect(returned_item["name"]).to eq(item.name)
     expect(returned_item["description"]).to eq(item.description)
-    expect(returned_item["unit_price"]).to eq(item.unit_price)
+    expect(returned_item["unit_price"]).to eq(((item.unit_price.to_f)* 0.01).to_s)
   end
 
   it 'should find a single item based on params' do
@@ -55,8 +55,6 @@ describe "Items API" do
       expect(data).to have_key('description')
       expect(data).to have_key('unit_price')
       expect(data).to have_key('merchant_id')
-      expect(data).to have_key('created_at')
-      expect(data).to have_key('updated_at')
     end
   end
 
@@ -161,7 +159,7 @@ describe "Items API" do
     end
 
     describe '/api/v1/items/:id/best_day' do
-      xit 'should return the most recent date with the most sales for the given item using the invoice date' do
+      it 'should return the most recent date with the most sales for the given item using the invoice date' do
         # Sell two of item today
         item = create(:item)
         invoice = create(:invoice)

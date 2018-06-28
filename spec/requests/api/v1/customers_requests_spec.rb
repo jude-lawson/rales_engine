@@ -131,8 +131,6 @@ RSpec.describe 'Customers Requests' do
       expect(data.class).to eq(Hash)
       expect(data).to have_key('first_name')
       expect(data).to have_key('last_name')
-      expect(data).to have_key('created_at')
-      expect(data).to have_key('updated_at')
     end
   end
 

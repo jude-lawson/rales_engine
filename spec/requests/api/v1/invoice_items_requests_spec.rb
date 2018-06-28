@@ -62,8 +62,6 @@ describe "Invoice_items API" do
       expect(data).to have_key('invoice_id')
       expect(data).to have_key('quantity')
       expect(data).to have_key('unit_price')
-      expect(data).to have_key('created_at')
-      expect(data).to have_key('updated_at')
     end
   end
 
