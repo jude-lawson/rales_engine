@@ -2,7 +2,7 @@
 
 #### Collaborators: Judson Stevens and Jude Dutton
 
-##Summary of Project
+## Summary of Project
 
   In this project, we were challenged to take large files of data and set up an API only Rails app that would respond to different user queries and requests. The responses should include relevant information about the request, including records and other business "intelligence" operations. The rubric and guide to the project is linked below. 
   
