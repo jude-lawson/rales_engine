@@ -165,35 +165,21 @@ describe "Items API" do
         # Sell two of item today
         item = create(:item)
         invoice = create(:invoice)
-        invoice2 = create(:invoice)
-        invoice_item = create(:invoice_item, quantity: 1, invoice: invoice, item: item)
-        invoice_item2 = create(:invoice_item, quantity: 1, invoice: invoice2, item: item)
+        create(:invoice_item, quantity: 2, invoice: invoice, item: item)
         create(:transaction, invoice: invoice)
-        create(:transaction, invoice: invoice2)
 
         # Same item, but an unsuccessful couple of transactions
         failed_invoice = create(:invoice)
-        failed_invoice2 = create(:invoice)
-        failed_invoice_item = create(:invoice_item, quantity: 1, invoice: failed_invoice, item: item)
-        failed_invoice_item2 = create(:invoice_item, quantity: 1, invoice: failed_invoice2, item: item)
-        create(:transaction, invoice: failed_invoice)
-        create(:transaction, invoice: failed_invoice2)
+        failed_invoice_item = create(:invoice_item, quantity: 2, invoice: failed_invoice, item: item)
+        create(:transaction, invoice: failed_invoice, result: 'failed')
 
         # Sell two of item1 yesterday
         earlier_invoice = create(:invoice, created_at: DateTime.yesterday)
-        earlier_invoice2 = create(:invoice, created_at: DateTime.yesterday)
-        earlier_invoice_item = create(:invoice_item, quantity: 1, invoice: earlier_invoice, item: item)
-        earlier_invoice_item = create(:invoice_item, quantity: 1, invoice: earlier_invoice2, item: item)
-        create(:transaction, invoice: earlier_invoice, result: 'failed')
-        create(:transaction, invoice: earlier_invoice2, result: 'failed')
+        earlier_invoice_item = create(:invoice_item, quantity: 2, invoice: earlier_invoice, item: item)
+        create(:transaction, invoice: earlier_invoice)
 
-        # Sell 1 of item2 today
-        sad_item = create(:item)
-        sad_invoice = create(:invoice)
-        sad_invoice_item = create(:invoice_item, quantity: 1, invoice: sad_invoice, item: sad_item)
-        create(:transaction, invoice: sad_invoice)
 
-        best_day = invoice2.created_at.iso8601(fraction_digits=3)
+        best_day = invoice.created_at.iso8601(fraction_digits=3)
         earlier_day = earlier_invoice.created_at.iso8601(fraction_digits=3)
 
         get "/api/v1/items/#{item.id}/best_day"
