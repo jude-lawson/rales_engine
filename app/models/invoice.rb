@@ -13,7 +13,7 @@ class Invoice < ApplicationRecord
     .joins(:invoice_items, :transactions, :items)
     .where("items.id = ? AND transactions.result = ?", item_id, 'success')
     .group("invoices.created_at, invoices.id")
-    .order("total_day_sales DESC")
+    .order("total_day_sales DESC, invoices.created_at DESC")
     .limit(1)
     .first["created_at"]
   end
