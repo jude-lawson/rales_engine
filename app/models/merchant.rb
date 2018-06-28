@@ -25,13 +25,13 @@ class Merchant < ApplicationRecord
     .limit(quantity_hash[:quantity].to_i)
   end
 
-  def self.most_items(quantity)
+  def self.most_items(quantity_hash)
     select("merchants.*")
     .joins(:invoices, invoices: [:invoice_items, :transactions])
     .where(transactions: {result: 'success' })
     .order("SUM(invoice_items.quantity)  DESC")
     .group(:id)
-    .limit(quantity.to_i)
+    .limit(quantity_hash[:quantity].to_i)
   end
 
   def self.total_revenue_by_date(date_hash)
