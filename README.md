@@ -12,14 +12,15 @@
 
   To get put this project on your own machine, follow these steps:
   1. Clone down the project from this repository, or fork it from this repository to your own.
-    `git clone git@github.com:jude-lawson/rales_engine.git`
+    ```git clone 
+       git@github.com:jude-lawson/rales_engine.git```
   2. Once the project has been cloned into your folder, navigate to that folder and run
-    `bundle install`
-    `bundle update`
+    ```bundle install
+       bundle update```
   3. Once the gems have finished updating, you can create the Postgres database and tables by running 
-    `rake db:{create,migrate}`
+    ```rake db:{create,migrate}```
   4. After creating the database, we need to seed the database with the information contained in the CSV files located in db/csv. To do this, we have built a rake task. Run this rake task by running
-    `rake seed_all_data`
+    ```rake seed_all_data```
   5. Once the database has been seeded, you can run our RSpec test suite by running
     `rspec`
   6. To start and interact with the server on your local machine, run
