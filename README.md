@@ -1,6 +1,6 @@
-#Rales Engine
+# Rales Engine
 
-####Collaborators: Judson Stevens and Jude Dutton
+#### Collaborators: Judson Stevens and Jude Dutton
 
 ##Summary of Project
 
@@ -8,7 +8,7 @@
   
   The Rales Engine project was an exploration of how to serve up data as an API, which is of course an integral part of almost every web application.
 
-##Setup & Installation
+## Setup & Installation
 
   To get put this project on your own machine, follow these steps:
   1. Clone down the project from this repository, or fork it from this repository to your own.
@@ -27,6 +27,6 @@
   7. After running the previous command, open a browser window and type `localhost:3000` into the address bar.
   8. Once you see the Rails welcome page, you can start to interact with the data using the endpoints located in the rubric and guide linked below.
   
-##Rubric and Guide
+## Rubric and Guide
 
   http://backend.turing.io/module3/projects/rails_engine
