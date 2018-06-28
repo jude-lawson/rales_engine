@@ -16,23 +16,31 @@
   ```shell
     git clone 
     git@github.com:jude-lawson/rales_engine.git 
-    ```
+  ```
     
   2. Once the project has been cloned into your folder, navigate to that folder and run
   
-    ```shell
+  ```shell
     bundle install
     bundle update
-    ```
+  ```
     
   3. Once the gems have finished updating, you can create the Postgres database and tables by running 
-    ```rake db:{create,migrate}```
+  ```shell
+  rake db:{create,migrate}
+  ```
   4. After creating the database, we need to seed the database with the information contained in the CSV files located in db/csv. To do this, we have built a rake task. Run this rake task by running
-    ```rake seed_all_data```
+  ```shell
+  rake seed_all_data
+  ```
   5. Once the database has been seeded, you can run our RSpec test suite by running
-    `rspec`
+  ```
+  rspec
+  ```
   6. To start and interact with the server on your local machine, run
-    `rails s`
+  ```
+  rails s
+  ```
   7. After running the previous command, open a browser window and type `localhost:3000` into the address bar.
   8. Once you see the Rails welcome page, you can start to interact with the data using the endpoints located in the rubric and guide linked below.
   
