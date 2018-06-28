@@ -22,6 +22,6 @@ class Item < ApplicationRecord
       .merge(Transaction.unscoped.successful)
       .group(:id)
       .order('sum(invoice_items.quantity) DESC')
-      .limit(1)
+      .limit(params["quantity"].to_i)
   end
 end
