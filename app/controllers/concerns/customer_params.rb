@@ -1,7 +1,7 @@
 module CustomerParams
   private
   
-  def search_params
+  def customer_params
     params.permit(:id, 
                   :customer_id,
                   :first_name,
