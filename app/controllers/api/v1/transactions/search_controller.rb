@@ -1,15 +1,11 @@
 class Api::V1::Transactions::SearchController < ApplicationController
+  include TransactionParams
+  
   def show
-    render json: Transaction.search_result(search_params)
+    render json: Transaction.search_result(transaction_params)
   end
 
   def index
-    render json: Transaction.search_results(search_params)
-  end
-
-  private
-
-  def search_params
-    params.permit(:id, :invoice_id, :credit_card_number, :result, :created_at, :updated_at)
+    render json: Transaction.search_results(transaction_params)
   end
 end
