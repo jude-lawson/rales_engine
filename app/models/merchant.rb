@@ -6,10 +6,12 @@ class Merchant < ApplicationRecord
   has_many :customers, through: :invoices
   has_many :invoice_items, through: :invoices
 
-  def self.favorite_merchant_by_customer(customer_id)
+  def self.favorite_merchant_by_customer(params_hash)
+    customer_id = params_hash[:id]
+
     select("merchants.*")
             .joins(:invoices, :transactions, :customers)
-            .where("customers.id = ? AND transactions.result = ?", customer_id.to_i, 'success')
+            .where("customers.id = ? AND transactions.result = ?", customer_id, 'success')
             .group(:id)
             .order("COUNT(transactions.id) DESC")
             .limit(1)
