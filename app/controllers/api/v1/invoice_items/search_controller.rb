@@ -1,14 +1,11 @@
 class Api::V1::InvoiceItems::SearchController < ApplicationController
+  include InvoiceItemParams
+
   def show
-    render json: InvoiceItem.search_result(search_params)
+    render json: InvoiceItem.search_result(invoice_item_params)
   end
 
   def index
-    render json: InvoiceItem.search_results(search_params)
-  end
-
-  private
-  def search_params
-    params.permit(:id, :quantity, :item_id, :invoice_id, :unit_price, :updated_at, :created_at)
+    render json: InvoiceItem.search_results(invoice_item_params)
   end
 end

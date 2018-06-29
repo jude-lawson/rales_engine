@@ -8,13 +8,15 @@ class Invoice < ApplicationRecord
   default_scope { order(:id) }
 
   def self.item_best_day(item_id)
-    unscoped
-    .select("invoices.created_at, COUNT(invoices.created_at) AS total_day_sales")
-    .joins(:invoice_items, :transactions, :items)
-    .where("items.id = ? AND transactions.result = ?", item_id, 'success')
-    .group("invoices.created_at, invoices.id")
-    .order("total_day_sales DESC, invoices.created_at DESC")
-    .limit(1)
-    .first["created_at"]
+    result = unscoped
+              .select("invoices.created_at, COUNT(invoices.created_at) AS total_day_sales")
+              .joins(:invoice_items, :transactions, :items)
+              .where("items.id = ? AND transactions.result = ?", item_id, 'success')
+              .group("invoices.created_at, invoices.id")
+              .order("total_day_sales DESC, invoices.created_at DESC")
+              .limit(1)
+              .first["created_at"]
+              
+    { best_day: result }
   end
 end

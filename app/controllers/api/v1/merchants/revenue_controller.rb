@@ -1,12 +1,11 @@
 class Api::V1::Merchants::RevenueController < ApplicationController
   include MerchantParams
+  
   def show
-    if params[:date]
-      result = Merchant.revenue_by_date(search_params)
-      render json: {revenue: Merchant.convert_to_string(result)}
+    if merchant_params[:date]
+      render json: Merchant.revenue_by_date(merchant_params)
     else
-      result = Merchant.total_revenue(search_params)
-      render json: {revenue: Merchant.convert_to_string(result)}
+      render json: Merchant.total_revenue(merchant_params)
     end
   end
 end

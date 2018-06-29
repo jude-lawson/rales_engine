@@ -1,14 +1,11 @@
 class Api::V1::Items::SearchController < ApplicationController
+  include ItemParams
+
   def show
-    render json: Item.search_result(search_params)
+    render json: Item.search_result(item_params)
   end
 
   def index
-    render json: Item.search_results(search_params)
-  end
-
-  private
-  def search_params
-    params.permit(:id, :name, :description, :merchant_id, :unit_price, :updated_at, :created_at)
+    render json: Item.search_results(item_params)
   end
 end

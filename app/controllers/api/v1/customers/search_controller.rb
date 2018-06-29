@@ -1,15 +1,11 @@
 class Api::V1::Customers::SearchController < ApplicationController
+  include CustomerParams
+  
   def show
-    render json: Customer.search_result(search_params)
+    render json: Customer.search_result(customer_params)
   end
 
   def index
-    render json: Customer.search_results(search_params)
-  end
-
-  private
-
-  def search_params
-    params.permit(:id, :first_name, :last_name, :created_at, :updated_at)
+    render json: Customer.search_results(customer_params)
   end
 end
