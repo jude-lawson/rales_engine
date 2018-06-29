@@ -7,8 +7,10 @@ class Item < ApplicationRecord
   # default_scope { order('items.id DESC') }
 
   def self.most_revenue(quantity = 5)
+    # .joins(:transactions, :invoice_items, :invoices)
     select("items.*, SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue")
-      .joins(:transactions, :invoice_items, :invoices)
+      .joins(:invoice_items, invoice_items: :invoice)
+      .joins("INNER JOIN transactions ON transactions.invoice_id=invoices.id")
       .where(transactions: { result: "success" })
       .order("revenue DESC")
       .group(:id)
