@@ -24,7 +24,7 @@ class Customer < ApplicationRecord
     .joins(:invoices, :transactions, :merchants)
     .where("merchants.id = ? AND transactions.result = ?", merchant_id, 'success')
     .group(:id)
-    .order("COUNT(transactions.id) DESC")
+    .order(Arel.sql("COUNT(transactions.id) DESC"))
     .limit(1)
     .first
   end

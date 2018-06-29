@@ -13,7 +13,7 @@ class Merchant < ApplicationRecord
             .joins(:invoices, :transactions, :customers)
             .where("customers.id = ? AND transactions.result = ?", customer_id, 'success')
             .group(:id)
-            .order("COUNT(transactions.id) DESC")
+            .order(Arel.sql("COUNT(transactions.id) DESC"))
             .limit(1)
             .first
   end
@@ -22,7 +22,7 @@ class Merchant < ApplicationRecord
     select("merchants.*")
     .joins(:invoices, invoices: [:invoice_items, :transactions])
     .where(transactions: {result: 'success' })
-    .order("SUM(invoice_items.quantity * invoice_items.unit_price)  DESC")
+    .order(Arel.sql("SUM(invoice_items.quantity * invoice_items.unit_price)  DESC"))
     .group(:id)
     .limit(quantity_hash[:quantity].to_i)
   end
