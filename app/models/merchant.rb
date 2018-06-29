@@ -37,28 +37,30 @@ class Merchant < ApplicationRecord
   end
 
   def self.total_revenue_by_date(date_hash)
-    joins(:invoices, invoices: [:invoice_items, :transactions])
-    .where(transactions: {result: 'success' })
-    .where(invoices: { created_at: date_hash[:date].to_date.beginning_of_day..date_hash[:date].to_date.end_of_day })
-    .sum("invoice_items.quantity * invoice_items.unit_price")
+    result = joins(:invoices, invoices: [:invoice_items, :transactions])
+              .where(transactions: {result: 'success' })
+              .where(invoices: { created_at: date_hash[:date].to_date.beginning_of_day..date_hash[:date].to_date.end_of_day })
+              .sum("invoice_items.quantity * invoice_items.unit_price")
+
+    { total_revenue: convert_to_string(result) }
   end
 
   def self.total_revenue(merchant_id_hash)
-    joins(:invoices, invoices: [:invoice_items, :transactions])
-    .where(transactions: {result: 'success' })
-    .where("merchants.id = ?", merchant_id_hash[:id].to_i)
-    .sum("invoice_items.quantity * invoice_items.unit_price")
+    result = joins(:invoices, invoices: [:invoice_items, :transactions])
+              .where(transactions: {result: 'success' })
+              .where("merchants.id = ?", merchant_id_hash[:id].to_i)
+              .sum("invoice_items.quantity * invoice_items.unit_price")
+
+    { revenue: convert_to_string(result) }
   end
 
   def self.revenue_by_date(params_hash)
-    joins(:invoices, invoices: [:invoice_items, :transactions])
-    .where(transactions: {result: 'success' })
-    .where("merchants.id = ?", params_hash[:id].to_i)
-    .where(invoices: { created_at: params_hash[:date].to_date.beginning_of_day..params_hash[:date].to_date.end_of_day })
-    .sum("invoice_items.quantity * invoice_items.unit_price")
-  end
+    result = joins(:invoices, invoices: [:invoice_items, :transactions])
+              .where(transactions: {result: 'success' })
+              .where("merchants.id = ?", params_hash[:id].to_i)
+              .where(invoices: { created_at: params_hash[:date].to_date.beginning_of_day..params_hash[:date].to_date.end_of_day })
+              .sum("invoice_items.quantity * invoice_items.unit_price")
 
-  def self.convert_to_string(result)
-    ((result.to_f) * 0.01).to_s
+    { revenue: convert_to_string(result) }
   end
 end

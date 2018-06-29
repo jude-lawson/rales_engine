@@ -30,4 +30,8 @@ class ApplicationRecord < ActiveRecord::Base
   def self.random_record
     order(Arel.sql("RANDOM()")).limit(1).first
   end
+
+  def self.convert_to_string(result)
+    ((result.to_f) * 0.01).to_s
+  end
 end
